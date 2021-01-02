@@ -1,7 +1,8 @@
-# RayTracing (Source https://github.com/wjakob/nori)
+# RayTracing
 
 ## Intro
 > This project uses Surface Area Heuristic to determine whether splitting a bounding box or not and using KD-tree to store every bounding box
+> Code base: https://github.com/wjakob/nori
 
 ## Result
 > Bunny (A small obj, which can be done under 150ms)
