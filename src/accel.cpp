@@ -1,12 +1,6 @@
 /*
 Group members:
-
-Name			    ID
-Han Wang		    47143106
-Jiawen Ye			54035818
-Yingchen Zhou		55879895
-
-
+    Han Wang, Jiawen Ye, Yingchen Zhou	
 */
 
 #include <nori/accel.h>
