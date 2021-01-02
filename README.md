@@ -1,7 +1,7 @@
 # RayTracing
 
 ## Intro
-> This project uses Surface Area Heuristic to determine whether splitting a bounding box or not and using KD-tree to store every bounding box
+> This project uses Surface Area Heuristic to determine whether splitting a bounding box or not and using KD-tree to store every bounding box</p>
 > Code base: https://github.com/wjakob/nori
 
 ## Result
