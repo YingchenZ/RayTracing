@@ -8,4 +8,4 @@
 > Bunny (A small obj, which can be done under 150ms)
 ![](bunny_example/bunny.png)</p>
 > Ajax (A large obj, which can be done under 7s)
-![](ajax-normal.png)
+![](ajax-normals.png)
