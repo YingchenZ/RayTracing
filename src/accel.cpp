@@ -24,15 +24,6 @@ void Accel::addMesh(Mesh* mesh) {
     m_bbox = m_mesh->getBoundingBox();
 }
 
-//bool  Accel::cmpI(uint32_t a, uint32_t b) {
-//   return m_mesh->getCentroid(a).z()> m_mesh->getCentroid(b).z();
-//};
-//bool  Accel::cmpII(uint32_t a, uint32_t b) {
-//    return m_mesh->getCentroid(a).y() > m_mesh->getCentroid(b).y();
-//};
-//bool  Accel::cmpIII(uint32_t a, uint32_t b) {
-//    return m_mesh->getCentroid(a).x() > m_mesh->getCentroid(b).x();
-//};
 struct cmpI {
     bool operator()(std::pair<uint32_t,Point3f> a, std::pair<uint32_t,Point3f> b) {
         return a.second.z() > b.second.z();
@@ -51,134 +42,6 @@ struct cmpIII {
     }
 };
 
-
-// Node* Accel::nodeBuild(BoundingBox3f bbox, std::vector<uint32_t> triangles, int depth) {
-//     // std::cout<<"In build"<<std::endl;
-//     if (triangles.empty())
-//         return nullptr;
-
-//     if (triangles.size() <= 10 || depth >= 12) {
-//         Node* leafNode = new Node();
-//         leafNode->myB = bbox;
-//         leafNode->leftChild = nullptr; //=======
-//         leafNode->rightChild = nullptr; //=======
-//         leafNode->isLeaf = true;
-//         leafNode->triangles = triangles;
-//         // std::cout<<"Size of triangles within leaf = "<<triangles.size()<<"in depth = "<< depth <<std::endl;
-//         return leafNode;
-//     }
-
-//     // Divide Bouding Box
-//     std::vector<BoundingBox3f> bboxB;
-//     std::vector<BoundingBox3f> left, right;
-//     /* min.x = min(corner.x, midpoint.x);
-//        min.y = min(corner.y, midpoint.y);
-//        min.z = min(corner.z, midpoint.z);*/
-//     Point3f midpoint = bbox.getCenter();
-//     // 0 = x, 1 = y, 2 = z
-//    // int splitPane = bbox.getLargestAxis();//=======
-
-//     //for (int i = 0; i < 8; i++) {
-//     //    Point3f min;
-//     //    min[0] = std::min(bbox.getCorner(i).x(), midpoint.x());
-//     //    min[1] = std::min(bbox.getCorner(i).y(), midpoint.y());
-//     //    min[2] = std::min(bbox.getCorner(i).z(), midpoint.z());
-
-//     //    Point3f max;
-//     //    max[0] = std::max(bbox.getCorner(i).x(), midpoint.x());
-//     //    max[1] = std::max(bbox.getCorner(i).y(), midpoint.y());
-//     //    max[2] = std::max(bbox.getCorner(i).z(), midpoint.z());
-
-//     //    int choice = -1; // 1 = l, 2 = r
-        
-//     std::vector<std::vector<uint32_t>> triangleList(2, std::vector<uint32_t>{});
-    
-//         if (depth % 3 == 0) { // divide according to x======= z half 
-//             // if y > mid.y,left else right
-//             std::priority_queue<std::pair<uint32_t,Point3f>, std::vector<std::pair<uint32_t,Point3f>>, cmpI >  cmpx;
-//             for(uint32_t tri : triangles){
-//                 cmpx.push(std::make_pair(tri,m_mesh->getCentroid(tri)));
-//             }
-            
-//             int cutIndex = cmpx.size() / 2, i= 0; //float cutZ = cmpx[cmpx.size() / 2]).z();
-//             while (!cmpx.empty()){
-//                 if(i < cutIndex){
-//                     triangleList[0].push_back(cmpx.top().first);
-//                 }
-//                 else
-//                     triangleList[1].push_back(cmpx.top().first);
-//                 cmpx.pop();
-//                 i++;
-//             }
-//         }
-//         else if (depth % 3 == 1) {// divide according to y======= x half
-//             std::priority_queue<std::pair<uint32_t,Point3f>, std::vector<std::pair<uint32_t,Point3f>>, cmpII >  cmpy;
-//             for(uint32_t tri : triangles){
-//                 cmpy.push(std::make_pair(tri,m_mesh->getCentroid(tri)));
-//             }
-//             int cutIndex = cmpy.size() / 2, i= 0; //float cutZ = cmpx[cmpx.size() / 2]).z();
-//             while (!cmpy.empty()){
-//                 if(i < cutIndex){
-//                     triangleList[0].push_back(cmpy.top().first);
-//                 }
-//                 else
-//                     triangleList[1].push_back(cmpy.top().first);
-//                 cmpy.pop();
-//                 i++;
-//             }
-//         }
-//         else {// divide according to z=======  y half
-//             std::priority_queue<std::pair<uint32_t,Point3f>, std::vector<std::pair<uint32_t,Point3f>>, cmpIII >  cmpz;
-//             for(uint32_t tri : triangles){
-//                 cmpz.push(std::make_pair(tri,m_mesh->getCentroid(tri)));
-//             }
-//             int cutIndex = cmpz.size() / 2, i= 0; //float cutZ = cmpx[cmpx.size() / 2]).z();
-//             while (!cmpz.empty()){
-//                 if(i < cutIndex){
-//                     triangleList[0].push_back(cmpz.top().first);
-//                 }
-//                 else
-//                     triangleList[1].push_back(cmpz.top().first);
-//                 cmpz.pop();
-//                 i++;
-//             }
-//         }
-        
-//     BoundingBox3f newLeft = BoundingBox3f();
-
-//     for (uint32_t box : triangleList[0]) {
-//         newLeft.expandBy(m_mesh->getBoundingBox(box));
-//     }
-
-//     BoundingBox3f newRight = BoundingBox3f();
-//     for (uint32_t box : triangleList[1]) {
-//         newRight.expandBy(m_mesh->getBoundingBox(box));
-//     }
-
-//     //std::vector<std::vector<uint32_t>> triangleList(2, std::vector<uint32_t>{});
-
-//     //for (uint32_t idx = 0; idx < triangles.size(); ++idx) {
-//     //    if (m_mesh->getBoundingBox(triangles[idx]).overlaps(newLeft)) {
-//     //        triangleList[0].push_back(triangles[idx]);
-//     //    }
-
-
-//     //    if (m_mesh->getBoundingBox(triangles[idx]).overlaps(newRight)) {
-//     //        triangleList[1].push_back(triangles[idx]);
-//     //    }
-
-//     //    else {
-//     //        continue;
-//     //    }
-//     //}
-
-//     Node* node = new Node();
-//     node->myB = bbox;
-//     node->leftChild = nodeBuild(newLeft, triangleList[0], depth + 1);
-//     node->rightChild = nodeBuild(newRight, triangleList[1], depth + 1);
-//     node->isLeaf = (node->leftChild == nullptr && node->rightChild == nullptr);
-//     return node;
-// }
 Node* Accel::nodeBuild(BoundingBox3f bbox, std::vector<uint32_t> triangles, int depth) {
     // std::cout<<"In build"<<std::endl;
     // we suppose Kt=1,ki=2;
@@ -348,49 +211,7 @@ bool Accel::rayIntersect(const Ray3f& ray_, Intersection& its, bool shadowRay) c
     uint32_t f = (uint32_t)-1;      // Triangle index of the closest intersection
 
     Ray3f ray(ray_); /// Make a copy of the ray (we will need to update its '.maxt' value)
-    // //do dfs here
-    // std::stack<Node*> dfsStack = std::stack<Node*>();
 
-    // dfsStack.push(this->root);
-    // // std::cout<<"Enter the loop"<<std::endl;
-    // while (!dfsStack.empty()) {
-    //     Node* current = dfsStack.top();
-    //     // std::cout<<"1"<<std::endl;
-    //     dfsStack.pop();
-    //     if (current->myB.rayIntersect(ray)) {
-    //         if (current->isLeaf) {
-    //             for (uint32_t idx = 0; idx < current->triangles.size(); ++idx) {
-    //                 float u, v, t;
-    //                 if (m_mesh->rayIntersect(current->triangles[idx], ray, u, v, t)) {
-    //                     /* An intersection was found! Can terminate
-    //                     immediately if this is a shadow ray query */
-    //                     if (shadowRay) {
-    //                         return true;
-    //                     }
-    //                     ray.maxt = its.t = t;
-    //                     its.uv = Point2f(u, v);
-    //                     its.mesh = m_mesh;
-    //                     f = current->triangles[idx];
-    //                     foundIntersection = true;
-    //                 }
-    //             }
-    //         }
-
-    //         if (!current->isLeaf) {
-    //             // std::cout<<"Size of non-leaf children size = "<<current->children.size()<<std::endl;
-    //             if (current->leftChild !=nullptr)
-    //                 dfsStack.push(current->leftChild);
-    //             if (current->rightChild != nullptr)
-    //                 dfsStack.push(current->rightChild);
-    //             // for (uint32_t i = 0; i < current->children.size(); ++i) {
-    //             //     if(current->children[i] != nullptr){
-    //             //         dfsStack.push(current->children[i]);                    
-    //             //     }    
-    //             // }
-    //         }
-    //     }
-    // }
-    // ================================Above is part2==========================================================
     std::stack<std::pair<Node*, int>> dfsStack;
 
     dfsStack.push(std::make_pair(this->root, 0));
